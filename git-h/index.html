@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset="utf-8">
+		<title>Hexagon</title>
+		<meta name="description" content="An addictive puzzle game.">
+		<link rel="manifest" href="manifest.webmanifest">
+		<meta name="apple-itunes-app" content="app-id=903769553"/>
+		<meta name="apple-mobile-web-app-title" content="Hexagon">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="apple-touch-icon" sizes="120x120" href="images/icons/apple-touch-120.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="images/icons/apple-touch-152.png">
+		<link rel="apple-touch-icon" sizes="167x167" href="images/icons/apple-touch-167.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="images/icons/apple-touch-180.png">
+		<link rel="apple-touch-icon" sizes="512x512" href="images/icons/apple-touch-512.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui"/>
+		<meta property="og:url" content=""/>
+		<meta property="og:site_name" content="Hexagon"/>
+		<meta property="og:title" content="Hexagon"/>
+		<meta property="og:description" content="An addictive puzzle game."/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:author" content=""/>
+		<meta property="og:image" content=""/>
+		<meta property="og:image:width" content="1200"/>
+		<meta property="og:image:height" content="630"/>
+		<meta property="twitter:card" content="summary"/>
+		<meta property="twitter:site" content=""/>
+		<meta property="twitter:site:id" content=""/>
+		<meta property="twitter:creator" content=""/>
+		<meta property="twitter:creator:id" content=""/>
+		<meta property="twitter:domain" content=""/>
+		<meta property="twitter:title" content="Hexagon"/>
+		<meta property="twitter:description" content="An addictive puzzle game."/>
+		<meta property="twitter:image:src" content=""/>
+		<meta property="twitter:image:width" content="512"/>
+		<meta property="twitter:image:height" content="512"/>
+		<meta property="twitter:app:id:iphone" content="">
+		<meta property="twitter:app:id:ipad" content="">
+		<meta property="twitter:app:id:googleplay" content="">
+		<meta property="twitter:app:country" content="us">
+		<meta property="twitter:app:url:iphone" content="">
+		<meta property="twitter:app:url:ipad" content="">
+		<meta property="twitter:app:url:googleplay" content="">
+		<link rel="icon" type="image/png" href="favicon.ico">
+		<link href='https://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="style/fa/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="style/style.css?v=4">
+		<script type='text/javascript' src="vendor/hammer.min.js"></script>
+		<script type='text/javascript' src="vendor/js.cookie.js"></script>
+		<script type='text/javascript' src="vendor/jsonfn.min.js"></script>
+		<script type='text/javascript' src="vendor/keypress.min.js"></script>
+		<script type='text/javascript' src="vendor/jquery.js"></script>
+		<script type='text/javascript' src="js/save-state.js?v=4"></script>
+		<script type='text/javascript' src="js/view.js?v=4"></script>
+		<script type='text/javascript' src="js/wavegen.js?v=4"></script>
+		<script type='text/javascript' src="js/math.js"></script>
+		<script type='text/javascript' src="js/Block.js?v=4"></script>
+		<script type='text/javascript' src="js/Hex.js?v=4"></script>
+		<script type='text/javascript' src="js/Text.js"></script>
+		<script type='text/javascript' src="js/comboTimer.js?v=4"></script>
+		<script type='text/javascript' src="js/checking.js?v=4"></script>
+		<script type='text/javascript' src='js/update.js?v=4'></script>
+		<script type='text/javascript' src='js/render.js?v=4'></script>
+		<script type='text/javascript' src="js/input.js?v=4"></script>
+		<script type='text/javascript' src="js/main.js?v=4"></script>
+		<script type='text/javascript' src="js/initialization.js?v=4"></script>
+		<script src="vendor/sweet-alert.min.js"></script>
+		<link rel="stylesheet" href="style/rrssb.css"/>
+		<!-- Yandex Games SDK: load only inside Yandex iframe -->
+		<script>
+		if (window.self !== window.top) {
+			var s = document.createElement('script');
+			s.src = 'https://yandex.ru/games/sdk/v2';
+			document.head.appendChild(s);
+		}
+		</script>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<div id="overlay" class="faded overlay"></div>
+		
+		<!-- Start Menu Top Buttons -->
+		<div id="startMenuButtons" class="unselectable">
+			<div id="themeBtn" class="menu-icon-btn">
+				<span class="material-icons">palette</span>
+			</div>
+			<div id="leaderboardBtn" class="menu-icon-btn">
+				<span class="material-icons">leaderboard</span>
+			</div>
+		</div>
+
+		<!-- Themes Modal -->
+		<div id="themesModal" class="modal unselectable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2>ВЫБОР ТЕМЫ</h2>
+					<span class="close-modal" id="closeThemes">&times;</span>
+				</div>
+				<div class="themes-grid" id="themesGrid">
+					<!-- Themes generated dynamically by JS -->
+				</div>
+			</div>
+		</div>
+
+		<!-- Leaderboard Modal -->
+		<div id="leaderboardModal" class="modal unselectable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2>ТАБЛИЦА РЕКОРДОВ</h2>
+					<span class="close-modal" id="closeLeaderboard">&times;</span>
+				</div>
+				<div class="leaderboard-tabs">
+					<div class="lead-tab active" id="leadTabStandard">СТАНДАРТ</div>
+					<div class="lead-tab" id="leadTabDouble">ДУБЛЬ</div>
+				</div>
+				<div class="leaderboard-body">
+					<ol class="lead-list" id="leadList">
+						<!-- Scores generated dynamically by JS -->
+					</ol>
+				</div>
+			</div>
+		</div>
+
+		<div id='startBtn' ></div>
+		<div id="modeSelector" class="unselectable">
+			<div class="mode-btn active" id="modeStandard">
+				<span id="modeStandardText">STANDARD</span>
+			</div>
+			<div class="mode-btn" id="modeDouble">
+				<span id="modeDoubleText">DOUBLE</span>
+			</div>
+		</div>
+		<div id="helpScreen" class='unselectable'>
+			<div id='inst_main_body'></div>
+		</div>
+		<div id="openSideBar" class='helpText' style="position:fixed; margin-top:6px; width:72px; height:72px; margin-left:11px; z-index:3003; cursor:pointer; top:0; left:0; display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
+			<span class="material-icons" style="font-size: 48px;">help_outline</span>
+		</div>
+		<div class="faded overlay"></div>
+		<!-- Music Controller -->
+		<div id="musicContainer" class="unselectable">
+			<div id="musicVisualizer">
+				<div class="vis-dot"></div>
+				<div class="vis-dot"></div>
+				<div class="vis-dot"></div>
+				<div class="vis-dot"></div>
+				<div class="vis-dot"></div>
+			</div>
+			<div id="musicWidget">
+				<div id="musicPlayBtn">
+					<span class="material-icons" id="musicPlayIcon">music_off</span>
+				</div>
+				<div id="musicTrackName">Paul Yudin</div>
+			</div>
+			<div id="musicDropdown">
+				<div class="music-option active" data-track="paulyudin-no-copyright-music-482400.mp3">Paul Yudin</div>
+				<div class="music-option" data-track="alexgrohl-no-copyright-music-bounce-on-it-184234.mp3">Alex Grohl - Bounce</div>
+				<div class="music-option" data-track="apalonbeats-no-copyright-music-549443.mp3">Apalon Beats</div>
+				<div class="music-option" data-track="audiocoffee-rock-trailer-no-copyright-music-469216.mp3">AudioCoffee - Rock</div>
+				<div class="music-option" data-track="loksii-no-copyright-music-211881.mp3">Loksii</div>
+				<div class="music-option" data-track="moodmode-no-copyright-music-201745.mp3">Moodmode</div>
+			</div>
+		</div>
+
+		<div id="pauseBtn" style="display:none; position:fixed; margin-bottom:7px; width:72px; height:72px; margin-right:11px; z-index:3000; cursor:pointer; bottom:0; right:0; display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
+			<span class="material-icons" id="pauseBtnIcon" style="font-size: 48px;">pause</span>
+		</div>
+		<div id='restartBtn' style="display:none; position:fixed; margin-bottom:7px; width:72px; height:72px; margin-left:11px; z-index:3000; cursor:pointer; bottom:0; left:0; display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
+			<span class="material-icons" style="font-size: 48px;">refresh</span>
+		</div>
+		<div id="menuBtnPause" class="helpText" style="display:none; position:fixed; margin-top:6px; width:72px; height:72px; margin-right:11px; z-index:3003; cursor:pointer; top:0; right:0; display:flex; align-items:center; justify-content:center; transition: all 0.2s;">
+			<span class="material-icons" style="font-size: 48px;">home</span>
+		</div>
+		<div id='highScoreInGameText'>
+			<div id='highScoreInGameTextHeader'>ЛУЧШИЙ</div><div id='currentHighScore'>0</div>
+		</div>
+		<div id="gameoverscreen">
+			<div class="gameover-layout">
+				<div id='container'>
+					<div id='gameOverBox'>ИГРА ОКОНЧЕНА</div>
+					<div id='cScore'>0</div>
+					
+					<div id='highScoresTitle'>РЕКОРДЫ <span id="highScoresMode"></span></div>
+					<div class="score-list">
+						<div class="score-row">
+							<span class="rank">1.</span>
+							<span id="1place" class="val">0</span>
+						</div>
+						<div class="score-row">
+							<span class="rank">2.</span>
+							<span id="2place" class="val">0</span>
+						</div>
+						<div class="score-row">
+							<span class="rank">3.</span>
+							<span id="3place" class="val">0</span>
+						</div>
+					</div>
+				</div>
+
+				<div id="buttonCont">
+					<div class="action-row">
+						<div id='restart' class="btn-flat btn-restart">
+							<span id="restartBtnText">ЗАНОВО</span>
+						</div>
+						<div id='menuBtn' class="btn-flat btn-menu">
+							<span id="menuBtnText">МЕНЮ</span>
+						</div>
+					</div>
+					<div id='socialShare' class="btn-flat btn-revive">
+						<span id="reviveBtnText">ВОЗРОДИТЬСЯ (РЕКЛАМА)</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
